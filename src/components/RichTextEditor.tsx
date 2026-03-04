@@ -23,6 +23,7 @@ import {
 import { useState, useCallback, useRef } from 'react';
 import EmojiPicker from './EmojiPicker';
 import { htmlToUnicode } from '@/utils/unicodeConverter';
+import { trackEvent } from '@/utils/analytics';
 
 interface RichTextEditorProps {
   onUpdate: (html: string) => void;
@@ -89,6 +90,7 @@ export default function RichTextEditor({ onUpdate }: RichTextEditorProps) {
 
     try {
       await navigator.clipboard.writeText(unicodeText);
+      trackEvent("copy_text");
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {

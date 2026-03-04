@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { X, Instagram, Youtube, Linkedin } from "lucide-react";
 import Image from "next/image";
+import { trackEvent } from "@/utils/analytics";
 
 const STORAGE_KEY = "ai_minimalist/newsletter_dismissed";
 const DISMISS_DURATION_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
@@ -55,8 +56,14 @@ export default function NewsletterModal() {
   }, []);
 
   const dismissTemporarily = useCallback(() => {
+    trackEvent("newsletter_popup_dismiss");
     setVisible(false);
   }, []);
+
+  const handleClose = useCallback(() => {
+    trackEvent("newsletter_popup_close");
+    dismissPermanently();
+  }, [dismissPermanently]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,6 +96,7 @@ export default function NewsletterModal() {
           return;
         }
 
+        trackEvent("newsletter_subscribe");
         dismissPermanently();
         setToast(true);
       } finally {
@@ -124,7 +132,7 @@ export default function NewsletterModal() {
           >
             {/* Close button */}
             <button
-              onClick={dismissPermanently}
+              onClick={handleClose}
               className="absolute top-4 right-4 z-10 p-1 text-black/40 hover:text-black transition-colors"
               aria-label="Close"
             >
