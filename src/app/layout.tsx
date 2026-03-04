@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import "./globals.css";
 
 const siteUrl = "https://linkedin-text-formatter.vercel.app/";
@@ -88,6 +89,22 @@ export default function RootLayout({
       <body className="antialiased">
         {children}
         <Analytics />
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-T8R6R3YHP8"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-T8R6R3YHP8');
+            `,
+          }}
+        />
       </body>
     </html>
   );
