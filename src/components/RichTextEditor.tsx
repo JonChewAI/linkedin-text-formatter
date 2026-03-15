@@ -269,6 +269,20 @@ export default function RichTextEditor({ onUpdate }: RichTextEditorProps) {
         <EditorContent editor={editor} className="h-full" />
       </div>
 
+      <div className="py-2 px-4 border-t border-black/10 flex items-center justify-between min-h-[44px]">
+        <div>
+          {editor.getText().length > 3000 && (
+            <p className="text-sm text-red-500 font-medium transition-opacity">
+              <span className="hidden sm:inline">You have exceeded LinkedIn's 3,000 character limit.</span>
+              <span className="sm:hidden">Over 3,000 character limit.</span>
+            </p>
+          )}
+        </div>
+        <p className={`text-sm shrink-0 whitespace-nowrap ml-4 transition-colors ${editor.getText().length > 3000 ? 'text-red-500 font-medium' : 'text-black/60'}`}>
+          {editor.getText().length} / 3000
+        </p>
+      </div>
+
       {/* Copy Button */}
       <div className="p-4 border-t border-black/10">
         <button
